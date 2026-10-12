@@ -1612,7 +1612,6 @@ const Engine = (function(){
 })();
 const State = (function(){
   const ANC_TTL = 6e5;
-  const EDGE_FRESH_MS = 9e5;
   const AUTO_RUN_PCT = 0.25;
 
   const S = {
@@ -1789,8 +1788,7 @@ const State = (function(){
     const F=S.profile.followers||0,G=S.profile.following||0;
     const remaining=Net.budget.core.remaining;
     const canRefetch=Planner.pages(F)+Planner.pages(G)<=Math.max(0,remaining-Planner.RESERVE);
-    const fresh=complete&&Date.now()-updatedAt<EDGE_FRESH_MS;
-    const useCache=complete&&!force&&(S.profileStale!=null||fresh||!canRefetch);
+    const useCache=complete&&!force&&(S.profileStale!=null||!canRefetch);
     const plan=Planner.choose({
       followers:F,
       following:G,
